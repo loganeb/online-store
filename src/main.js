@@ -2,6 +2,7 @@
 // (runtime-only or standalone) has been set in webpack.base.conf with an alias.
 import Vue from 'vue';
 import VeeValidate from 'vee-validate';
+import store from './store/index.store';
 
 import App from './App';
 import router from './router';
@@ -13,7 +14,13 @@ Vue.use(VeeValidate);
 /* eslint-disable no-new */
 new Vue({
   el: '#app',
+  store,
   router,
   components: { App },
   template: '<App/>',
+  methods: {
+    addProduct(product) {
+      this.$store.commit('addProduct', product);
+    },
+  },
 });
