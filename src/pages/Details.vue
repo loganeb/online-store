@@ -15,11 +15,6 @@
                 this.$store.dispatch('productById', this.$route.params['id']);
             }
         },
-        computed: {
-            product(){
-                return this.$store.getters.productById(this.$rute.params['id']);
-            }
-        },
         components: {
             'product-details': ProductDetails,
         },

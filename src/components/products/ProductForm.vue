@@ -7,8 +7,10 @@
           type="text"
           placeholder="Name"
           v-model="model.name"
+          v-validate="'required'"
           name="name"
-          class="form-control" />
+          :class="{'form-control': true, 'error': errors.has('name') }" />
+        <span class="small text-danger" v-show="errors.has('name')">Name is required</span>
       </div>
       <div class="form-group">
         <label>Price</label>
@@ -17,19 +19,32 @@
           class="form-control"
           placeholder="Price"
           v-model="model.price"
-          name="price" />
+          v-validate="'required'"
+          name="price"
+          :class="{'form-control': true, 'error': errors.has('price') }" />
+        <span class="small text-danger" v-show="errors.has('price')">Price is required</span>
       </div>
       <div class="form-group">
+
         <label>Manufacturer</label>
         <select
           type="text"
           class="form-control"
           v-model="model.manufacturer"
-          name="manufacturer">
+          v-validate="'required'"
+          name="manufacturer"
+          :class="{'form-control': true, 'error': errors.has('manufacturer') }">
           <template v-for="manufacturer in manufacturers">
-            <option :value="manufacturer._id" :selected="manufacturer._id == (model.manufacturer && model.manufacturer._id)" v-bind:key="manufacturer.id">{{manufacturer.name}}</option>
+            <option 
+              :value="manufacturer._id" 
+              :selected="manufacturer._id == (model.manufacturer && model.manufacturer._id)"
+              :key="manufacturer._id"
+              >
+              {{manufacturer.name}}
+            </option>
           </template>
         </select>
+        <span class="small text-danger" v-show="errors.has('manufacturer')">Manufacturer is required</span>
       </div>
     </div>
 
@@ -41,23 +56,27 @@
           lass="form-control"
           placeholder="Image"
           v-model="model.image"
+          v-validate="'required|url'"
           name="image"
-          class="form-control" />
+          :class="{'form-control': true, 'error': errors.has('image') }" />
+        <span class="small text-danger" v-show="errors.has('image')">Image is required and must be a valid URL</span>
       </div>
       <div class="form-group">
         <label>Description</label>
         <textarea
+          type="number"
           class="form-control"
           placeholder="Description"
           rows="5"
           v-model="model.description"
-          name="description">
-          </textarea>
+          v-validate="'required'"
+          name="description"
+          :class="{'form-control': true, 'error': errors.has('description') }"></textarea>
+        <span class="small text-danger" v-show="errors.has('description')">Description is required</span>
       </div>
       <div class="form-group new-button">
         <button class="button">
           <i class="fa fa-pencil"></i>
-          <!-- Conditional rendering for input text -->
           <span v-if="isEditing">Update Product</span>
           <span v-else>Add Product</span>
         </button>
@@ -67,16 +86,25 @@
 </template>
 
 <script>
+  import {
+    ERROR_MSG
+  } from '../../store/mutationTypes'
   export default {
-    props: ['model', 'isEditing', 'manufacturers'],
-    methods: {
-        saveProduct () {
-            this.$emit('save-product', this.model)
-        },
-        updateProduct () {
-            this.$emit('update-product', this.model)
-        }
+    props: ['model', 'manufacturers', 'isEditing'],
+    created () {
     },
-}
-  
+    methods: {
+      saveProduct () {
+        this.$validator.validateAll().then(() => {
+          this.$emit('save-product', this.model)
+        }).catch(() => {
+          this.$store.commit(ERROR_MSG, {
+            type: 'error',
+            title: 'Validation!',
+            content: 'Please ensure the form is valid.'
+          })
+        })
+      }
+    }
+  }
 </script>
