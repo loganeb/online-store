@@ -7,6 +7,7 @@ import Index from '@/pages/admin/Index';
 import New from '@/pages/admin/New';
 import Edit from '@/pages/admin/Edit';
 import Products from '@/pages/admin/Products';
+import Details from '@/pages/Details';
 
 Vue.use(Router);
 
@@ -37,6 +38,11 @@ export default new Router({
           path: '',
           name: 'Products',
           component: Products,
+        },
+        {
+          path: '/details/:id',
+          name: 'Details',
+          component: Details
         },
       ],
     },
