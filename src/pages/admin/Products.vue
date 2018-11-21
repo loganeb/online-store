@@ -12,9 +12,9 @@
             </thead>
             <tbody>
             <tr v-for="product in products" :key="product._id">
-              <td>{{ product.name }}</td>
+              <td><router-link :to="'/details/' + product._id">{{ product.name }}</router-link></td>
               <td>${{ product.price }}</td>
-              <!--<td>{{ product.manufacturer.name }}</td>-->
+              <td>{{ manufacturers.find( m => m._id == product.manufacturer)['name'] }}</td>
               <td><router-link :to="'/admin/edit/'+product._id"><i class="fa fa-pencil-square-o"></i></router-link></td>
               <td><a @click="deleteProduct(product._id)" ><i class="fa fa-trash"></i></a></td>
             </tr>
@@ -28,11 +28,15 @@
     computed: {
       products () {
         return this.$store.getters.allProducts;
+      },
+      manufacturers(){
+        return this.$store.getters.allManufacturers;
       }
     },
     created () {
       if (this.products.length === 0) {
         this.$store.dispatch('allProducts');
+        this.$store.dispatch('allManufacturers');
       }
     },
     methods: {

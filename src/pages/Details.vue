@@ -11,17 +11,15 @@
 
     export default {
         created(){
-            if(!this.product.name) {
-                this.$store.dispatch('productById', this.$route.params['id']);
-            }
+            this.$store.dispatch('productById', this.$route.params['id']);
         },
         components: {
             'product-details': ProductDetails,
         },
-        data() {
-            return{
-                product: this.$store.getters.productById(this.$route.params['id']),
-            }
-        }
+        computed: {
+            product(){
+                return this.$store.getters.productById(this.$route.params['id']);
+            },
+        },
     }
 </script>

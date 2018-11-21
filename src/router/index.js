@@ -38,12 +38,12 @@ export default new Router({
           name: 'Products',
           component: Products,
         },
-        {
-          path: '/details/:id',
-          name: 'Details',
-          component: Details
-        },
       ],
+    },
+    {
+      path: '/details/:id',
+      name: 'Details',
+      component: Details
     },
     {
       path: '/cart',

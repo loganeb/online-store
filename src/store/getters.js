@@ -13,5 +13,7 @@ export const productGetters = {
 };
 
 export const manufacturerGetters = {
-    allManufacturers: state => state.manufacturers,
+    allManufacturers: (state, getters) => {
+        return state.manufacturers
+    },
 };

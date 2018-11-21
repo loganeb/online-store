@@ -23,7 +23,6 @@ export const productActions = {
 
         axios.get(`${API_BASE}/products`).then(response => {
             commit(ALL_PRODUCTS_SUCCESS, response.data);
-            console.log(response.data);
         });
     },
     productById ({commit}, payload) {
